@@ -1,4 +1,4 @@
-import commands.AddTransactionCommand;
+import commands.*;
 import services.ITerminalCommandService;
 import services.ITransactionService;
 import services.TerminalCommandService;
@@ -18,6 +18,11 @@ public class Main {
 
         // Register the commands.
         terminalCommandService.registerCommand(new AddTransactionCommand(transactionService, scanner));
+        terminalCommandService.registerCommand(new DeleteTransactionCommand(transactionService, scanner));
+        terminalCommandService.registerCommand(new ShowBalanceCommand(transactionService, scanner));
+        terminalCommandService.registerCommand(new DisplayExpensesCommand(transactionService, scanner));
+        terminalCommandService.registerCommand(new DisplayIncomesCommand(transactionService, scanner));
+        terminalCommandService.registerCommand(new ShowAllTransactionsCommand(transactionService, scanner));
 
         // Application starts.
         if (terminalCommandService instanceof TerminalCommandService service) {
