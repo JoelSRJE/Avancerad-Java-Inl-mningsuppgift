@@ -64,7 +64,7 @@ public class AddTransactionCommand extends Command {
 
         try {
             transactionService.addTransaction(transaction);
-            System.out.println("\nTransaction added: \n| Category: " + transaction.getCategory() + " | Amount: " + transaction.getAmount() + " | Date: " + transaction.getDate() + " |");
+            System.out.println("Transaction added: \n| Category: " + transaction.getCategory() + " | Amount: " + transaction.getAmount() + " | Date: " + transaction.getDate() + " |");
             System.out.println("----------------------------\n");
         } catch (Exception exception) {
             System.out.println("Transaction error: " + exception.getMessage());

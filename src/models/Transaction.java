@@ -14,13 +14,14 @@ public class Transaction {
 
     // Constructor to create a new transaction (without id)
     public Transaction(String category, double amount, LocalDate date, boolean type) {
+        this.id = UUID.randomUUID();
         this.category = category;
         this.amount = amount;
         this.date = date;
         this.type = type;
     }
 
-    // Constructor with id for future use.
+    // Constructor with id for future use / for repo / transaction.txt file.
     public Transaction(UUID id, String category, double amount, LocalDate date, boolean type) {
         this.id = id;
         this.category = category;
