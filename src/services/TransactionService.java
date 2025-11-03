@@ -37,27 +37,61 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public double showBalance() throws Exception {
-        return 0;
+        double balance = 0.0;
+
+        for (Transaction transaction : transactions) {
+            if (transaction.isType()) {
+                balance += transaction.getAmount();
+            } else {
+                balance -= transaction.getAmount();
+            }
+        }
+
+        return (balance);
     }
 
     @Override
     public double getAllIncomes() throws Exception {
-        return 0;
+        double incomes = 0.0;
+        incomes = transactions.stream()
+                .filter(Transaction::isType)
+                .mapToDouble(Transaction::getAmount)
+                .sum();
+
+        return incomes;
     }
 
     @Override
     public double getAllExpenses() throws Exception {
-        return 0;
+        double expenses = 0.0;
+        expenses = transactions.stream()
+                .filter(transaction -> !transaction.isType())
+                .mapToDouble(Transaction::getAmount)
+                .sum();
+
+        return expenses;
     }
 
     @Override
     public List<Transaction> displayExpenses() throws Exception {
-        return List.of();
+        List<Transaction> expenses = new ArrayList<>();
+
+        expenses = transactions.stream()
+                .filter(transaction -> !transaction.isType())
+                .toList();
+
+        return expenses;
     }
 
     @Override
     public List<Transaction> displayIncomes() throws Exception {
-        return List.of();
+        List<Transaction> incomes = new ArrayList<>();
+
+        incomes = transactions.stream()
+                .filter(transaction -> !transaction.isType())
+                .toList();
+
+        return incomes;
     }
 
     @Override
