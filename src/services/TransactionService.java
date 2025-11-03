@@ -23,7 +23,16 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public Transaction deleteTransaction(UUID transactionId) throws Exception {
-        return null;
+        List<Transaction> transactions = showAllTransactions();
+
+        for (Transaction transaction : transactions) {
+            if (transaction.getId().equals(transactionId)) {
+                transactions.remove(transaction);
+                return transaction;
+            }
+        }
+
+        throw new Exception("Transaction to be deleted not found!");
     }
 
     @Override
