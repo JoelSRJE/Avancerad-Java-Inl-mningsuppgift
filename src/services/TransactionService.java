@@ -2,13 +2,23 @@ package services;
 
 import models.Transaction;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class TransactionService implements ITransactionService {
+
+    // Building the functionality with a list for starters, before transactions.txt
+    private List<Transaction> transactions = new ArrayList<>();
+
     @Override
     public void addTransaction(Transaction transaction) throws Exception {
-        System.out.println("Added Transaction");
+        // Adds the transaction in the arraylist.
+        if (transaction == null) {
+            throw new Exception("Transaction cannot be null/empty!");
+        }
+
+        transactions.add(transaction);
     }
 
     @Override
@@ -43,6 +53,7 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public List<Transaction> showAllTransactions() throws Exception {
-        return List.of();
+        // Returns the ArrayList of transactions.
+        return transactions;
     }
 }
