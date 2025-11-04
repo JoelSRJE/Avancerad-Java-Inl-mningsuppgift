@@ -62,7 +62,7 @@ public class Transaction {
     }
 
     // data to fill out transactions for future use
-    public static List<Transaction> populateTransactions() {
+    public static List<Transaction> populateTransactionsFirstAccount() {
         List<Transaction> transactions = new ArrayList<>();
 
         // By month
@@ -107,6 +107,53 @@ public class Transaction {
         transactions.add(new Transaction("Concert Tickets", 1200, LocalDate.of(2025, 8, 12), false));
         transactions.add(new Transaction("Groceries", 1350, LocalDate.of(2025, 8, 27), false));
         transactions.add(new Transaction("Rent", 8200, LocalDate.of(2025, 8, 31), false));
+
+        return transactions;
+    }
+
+    public static List<Transaction> populateTransactionsSecondAccount() {
+        List<Transaction> transactions = new ArrayList<>();
+
+        // By month
+        transactions.add(new Transaction("Salary", 22000, LocalDate.of(2025, 1, 25), true));
+        transactions.add(new Transaction("Groceries", 1000, LocalDate.of(2025, 1, 27), false));
+        transactions.add(new Transaction("Rent", 7500, LocalDate.of(2025, 1, 31), false));
+        transactions.add(new Transaction("Public Transport", 500, LocalDate.of(2025, 1, 15), false));
+
+        transactions.add(new Transaction("Freelance", 4000, LocalDate.of(2025, 2, 5), true));
+        transactions.add(new Transaction("Electricity", 550, LocalDate.of(2025, 2, 10), false));
+        transactions.add(new Transaction("Dining Out", 600, LocalDate.of(2025, 2, 18), false));
+        transactions.add(new Transaction("Gift Received", 1200, LocalDate.of(2025, 2, 20), true));
+
+        transactions.add(new Transaction("Salary", 22000, LocalDate.of(2025, 3, 25), true));
+        transactions.add(new Transaction("Groceries", 1100, LocalDate.of(2025, 3, 28), false));
+        transactions.add(new Transaction("Rent", 7500, LocalDate.of(2025, 3, 31), false));
+        transactions.add(new Transaction("Internet", 450, LocalDate.of(2025, 3, 15), false));
+
+        transactions.add(new Transaction("Freelance", 4500, LocalDate.of(2025, 4, 10), true));
+        transactions.add(new Transaction("Electricity", 600, LocalDate.of(2025, 4, 12), false));
+        transactions.add(new Transaction("Gym Membership", 300, LocalDate.of(2025, 4, 14), false));
+        transactions.add(new Transaction("Gift", 700, LocalDate.of(2025, 4, 18), true));
+
+        transactions.add(new Transaction("Salary", 22000, LocalDate.of(2025, 5, 25), true));
+        transactions.add(new Transaction("Rent", 7500, LocalDate.of(2025, 5, 31), false));
+        transactions.add(new Transaction("Clothing", 900, LocalDate.of(2025, 5, 11), false));
+        transactions.add(new Transaction("Dividend", 1500, LocalDate.of(2025, 5, 20), true));
+
+        transactions.add(new Transaction("Freelance", 5000, LocalDate.of(2025, 6, 7), true));
+        transactions.add(new Transaction("Vacation", 4000, LocalDate.of(2025, 6, 18), false));
+        transactions.add(new Transaction("Groceries", 1200, LocalDate.of(2025, 6, 24), false));
+        transactions.add(new Transaction("Insurance", 1000, LocalDate.of(2025, 6, 28), false));
+
+        transactions.add(new Transaction("Salary", 22000, LocalDate.of(2025, 7, 25), true));
+        transactions.add(new Transaction("Car Maintenance", 2500, LocalDate.of(2025, 7, 10), false));
+        transactions.add(new Transaction("Electricity", 550, LocalDate.of(2025, 7, 14), false));
+        transactions.add(new Transaction("Restaurant", 600, LocalDate.of(2025, 7, 22), false));
+
+        transactions.add(new Transaction("Freelance", 5200, LocalDate.of(2025, 8, 8), true));
+        transactions.add(new Transaction("Concert Tickets", 1000, LocalDate.of(2025, 8, 12), false));
+        transactions.add(new Transaction("Groceries", 1300, LocalDate.of(2025, 8, 27), false));
+        transactions.add(new Transaction("Rent", 7700, LocalDate.of(2025, 8, 31), false));
 
         return transactions;
     }

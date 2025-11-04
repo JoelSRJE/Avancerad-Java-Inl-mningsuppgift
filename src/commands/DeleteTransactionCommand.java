@@ -1,7 +1,7 @@
 package commands;
 
 import models.Transaction;
-import services.ITransactionService;
+import services.IAccountService;
 
 import java.util.List;
 import java.util.Scanner;
@@ -9,17 +9,24 @@ import java.util.UUID;
 
 public class DeleteTransactionCommand extends Command {
 
-    public DeleteTransactionCommand(ITransactionService transactionService, Scanner scanner) {
-        super("Delete Transaction", transactionService, scanner);
+    private final UUID accountID;
+
+    public DeleteTransactionCommand(IAccountService accountService, Scanner scanner, UUID accountID) {
+        super("Delete Transaction", accountService, scanner);
+        this.accountID = accountID;
     }
 
     @Override
     public void execute() {
         try {
-            List<Transaction> transactions = transactionService.showAllTransactions();
+            List<Transaction> transactions = accountService.getAllTransactions(accountID);
+
+            System.out.println("\n=== All Transactions: (Account: " + accountService.getAccount(accountID).getAccountName() + (") ==="));
+            System.out.println("----------------------------");
+
 
             if (transactions.isEmpty()) {
-                System.out.println("\n=== Delete Transactions ===");
+                System.out.println("\n=== Delete Transactions (Account: " + accountService.getAccount(accountID).getAccountName() + ") ===");
                 System.out.println("-------------------------------\n");
                 System.out.println("No transactions to delete!");
                 System.out.println("\n-------------------------------\n");
@@ -35,20 +42,19 @@ public class DeleteTransactionCommand extends Command {
             System.out.println("\n-------------------------------\n");
 
             System.out.println("=== Delete Transaction ===");
+            System.out.println("----------------------------");
             System.out.print("ID: ");
             String id = scanner.nextLine();
-            UUID realId = UUID.fromString(id);
 
-            Transaction deleted = transactionService.deleteTransaction(realId);
+            try {
+                UUID transactionId = UUID.fromString(id);
+                accountService.removeTransaction(accountID, transactionId);
 
-            if (deleted != null) {
                 System.out.println("\n-------------------------------\n");
-                System.out.println("Deleted: " + deleted);
+                System.out.println("Transaction deleted successfully! ");
                 System.out.println("\n-------------------------------\n");
-            } else {
-                System.out.println("\n-------------------------------\n");
-                System.out.println("No transaction found with that ID!");
-                System.out.println("\n-------------------------------\n");
+            } catch (IllegalArgumentException exception) {
+                System.out.println("Invalid Transaction ID!");
             }
 
         } catch (Exception exception) {

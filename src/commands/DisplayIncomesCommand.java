@@ -1,24 +1,30 @@
 package commands;
 
 import models.Transaction;
-import services.ITransactionService;
+import services.IAccountService;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class DisplayIncomesCommand extends Command {
 
-    public DisplayIncomesCommand(ITransactionService transactionService, Scanner scanner) {
-        super("Display Incomes", transactionService, scanner);
+    private final UUID accountID;
+
+    public DisplayIncomesCommand(IAccountService accountService, Scanner scanner, UUID accountID) {
+        super("Display Incomes", accountService, scanner);
+        this.accountID = accountID;
     }
 
     @Override
     public void execute() {
-        System.out.println("\n=== Display Incomes ===");
-        System.out.println("----------------------------\n");
+
 
         try {
-            List<Transaction> transactions = transactionService.showAllTransactions();
+            System.out.println("\n=== Display Incomes (Account: " + accountService.getAccount(accountID).getAccountName() + ") ===");
+            System.out.println("----------------------------\n");
+
+            List<Transaction> transactions = accountService.getAllTransactions(accountID);
             List<Transaction> incomes = transactions.stream()
                     .filter(transaction -> transaction.isType())
                     .toList();
@@ -27,7 +33,7 @@ public class DisplayIncomesCommand extends Command {
                 System.out.println(income);
             }
 
-            System.out.println("\nTotal Expenses: " + transactionService.getAllIncomes() + " (" + incomes.size() + "x)");
+            System.out.println("\nTotal Expenses: " + accountService.getTotalIncomes(accountID) + " (" + incomes.size() + "x)");
 
             System.out.println("\n----------------------------\n");
         } catch (Exception exception) {

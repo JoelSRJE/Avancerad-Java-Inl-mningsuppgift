@@ -1,27 +1,35 @@
 package commands;
 
 import models.Transaction;
-import services.ITransactionService;
+import services.IAccountService;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class ShowAllTransactionsCommand extends Command {
 
-    public ShowAllTransactionsCommand(ITransactionService transactionService, Scanner scanner) {
-        super("Show All Transactions", transactionService, scanner);
+    private final UUID accountID;
+
+    public ShowAllTransactionsCommand(IAccountService accountService, Scanner scanner, UUID accountID) {
+        super("Show All Transactions", accountService, scanner);
+        this.accountID = accountID;
     }
 
     @Override
     public void execute() {
-        System.out.println("\n=== All Transactions ===");
-        System.out.println("----------------------------\n");
-
         try {
-            List<Transaction> transactions = transactionService.showAllTransactions();
+            System.out.println("\n=== All Transactions (Account: " + accountService.getAccount(accountID).getAccountName() + ") ===");
+            System.out.println("----------------------------\n");
 
-            for (Transaction transaction : transactions) {
-                System.out.println(transaction);
+            List<Transaction> transactions = accountService.getAllTransactions(accountID);
+
+            if (transactions.isEmpty()) {
+                System.out.println("No transactions found!");
+            } else {
+                for (Transaction transaction : transactions) {
+                    System.out.println(transaction);
+                }
             }
 
             System.out.println("\n----------------------------\n");

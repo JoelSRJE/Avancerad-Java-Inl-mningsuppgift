@@ -1,15 +1,19 @@
 package commands;
 
 import models.Transaction;
-import services.ITransactionService;
+import services.IAccountService;
 
 import java.time.LocalDate;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class AddTransactionCommand extends Command {
 
-    public AddTransactionCommand(ITransactionService transactionService, Scanner scanner) {
-        super("Add Transaction", transactionService, scanner);
+    private final UUID accountID;
+
+    public AddTransactionCommand(IAccountService accountService, Scanner scanner, UUID accountID) {
+        super("Add Transaction", accountService, scanner);
+        this.accountID = accountID;
     }
 
     @Override
@@ -47,15 +51,18 @@ public class AddTransactionCommand extends Command {
 
         double amount = 0.0;
         while (true) {
-            System.out.println("Transaction amount: " + amount);
+            System.out.println("Transaction amount: ");
             System.out.print("Amount: ");
-            amount = scanner.nextDouble();
-            scanner.nextLine();
+            try {
+                amount = Double.parseDouble(scanner.nextLine());
 
-            if (amount <= 0) {
-                System.out.println("Amount must be greater than zero!");
-            } else {
-                break;
+                if (amount <= 0) {
+                    System.out.println("Amount must be greater than zero!");
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException exception) {
+                System.out.println("Invalid amount!");
             }
         }
 
@@ -63,7 +70,7 @@ public class AddTransactionCommand extends Command {
         Transaction transaction = new Transaction(category, amount, date, type);
 
         try {
-            transactionService.addTransaction(transaction);
+            accountService.addTransaction(accountID, transaction);
             System.out.println("Transaction added: \n| Category: " + transaction.getCategory() + " | Amount: " + transaction.getAmount() + " | Date: " + transaction.getDate() + " |");
             System.out.println("----------------------------\n");
         } catch (Exception exception) {

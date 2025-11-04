@@ -1,17 +1,17 @@
 package commands;
 
-import services.ITransactionService;
+import services.IAccountService;
 
 import java.util.Scanner;
 
 public abstract class Command {
     protected String name;
-    protected ITransactionService transactionService;
+    protected IAccountService accountService;
     protected Scanner scanner;
 
-    public Command(String name, ITransactionService transactionService, Scanner scanner) {
+    public Command(String name, IAccountService accountService, Scanner scanner) {
         this.name = name;
-        this.transactionService = transactionService;
+        this.accountService = accountService;
         this.scanner = scanner;
     }
 

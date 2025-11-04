@@ -1,28 +1,32 @@
 package commands;
 
-import services.ITransactionService;
+import services.IAccountService;
 
 import java.util.Scanner;
+import java.util.UUID;
 
 public class ShowBalanceCommand extends Command {
 
-    public ShowBalanceCommand(ITransactionService transactionService, Scanner scanner) {
-        super("Show Balance", transactionService, scanner);
+    private final UUID accountID;
+
+    public ShowBalanceCommand(IAccountService accountService, Scanner scanner, UUID accountID) {
+        super("Show Balance", accountService, scanner);
+        this.accountID = accountID;
     }
 
     @Override
     public void execute() {
-        System.out.println("\n=== Show Balance ===");
-        System.out.println("----------------------------");
-
         try {
-            System.out.println("Total Balance: " + transactionService.showBalance() + "\n"
-                    + "All Incomes: " + transactionService.getAllIncomes() + "\n"
-                    + "All Expenses: " + transactionService.getAllExpenses());
+            System.out.println("\n=== Show Balance (Account: " + accountService.getAccount(accountID).getAccountName() + ") ===");
+            System.out.println("----------------------------");
+
+
+            System.out.println("Total Balance: " + accountService.getBalance(accountID) + "\n"
+                    + "All Incomes: " + accountService.getTotalIncomes(accountID) + "\n"
+                    + "All Expenses: " + accountService.getTotalExpenses(accountID));
             System.out.println("----------------------------\n");
         } catch (Exception exception) {
             System.out.println("Error: " + exception.getMessage());
         }
-
     }
 }

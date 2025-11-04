@@ -1,10 +1,11 @@
 import commands.*;
+import services.AccountService;
+import services.IAccountService;
 import services.ITerminalCommandService;
-import services.ITransactionService;
 import services.TerminalCommandService;
-import services.TransactionService;
 
 import java.util.Scanner;
+import java.util.UUID;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,20 +14,22 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         // Instances.
-        ITransactionService transactionService = new TransactionService();
-        ITerminalCommandService terminalCommandService = new TerminalCommandService();
+        IAccountService accountService = new AccountService();
+        TerminalCommandService terminalCommandService = new TerminalCommandService();
+
+        UUID accountID = terminalCommandService.loginOrCreateMenu(accountService, scanner);
 
         // Register the commands.
-        terminalCommandService.registerCommand(new AddTransactionCommand(transactionService, scanner));
-        terminalCommandService.registerCommand(new DeleteTransactionCommand(transactionService, scanner));
-        terminalCommandService.registerCommand(new ShowBalanceCommand(transactionService, scanner));
-        terminalCommandService.registerCommand(new DisplayExpensesCommand(transactionService, scanner));
-        terminalCommandService.registerCommand(new DisplayIncomesCommand(transactionService, scanner));
-        terminalCommandService.registerCommand(new ShowAllTransactionsCommand(transactionService, scanner));
+        terminalCommandService.registerCommand(new AddTransactionCommand(accountService, scanner, accountID));
+        terminalCommandService.registerCommand(new DeleteTransactionCommand(accountService, scanner, accountID));
+        terminalCommandService.registerCommand(new ShowBalanceCommand(accountService, scanner, accountID));
+        terminalCommandService.registerCommand(new DisplayExpensesCommand(accountService, scanner, accountID));
+        terminalCommandService.registerCommand(new DisplayIncomesCommand(accountService, scanner,accountID));
+        terminalCommandService.registerCommand(new ShowAllTransactionsCommand(accountService, scanner, accountID));
 
         // Application starts.
         if (terminalCommandService instanceof TerminalCommandService service) {
-            service.onStart(scanner);
+            service.onStart(scanner, accountService);
         }
     }
 }
