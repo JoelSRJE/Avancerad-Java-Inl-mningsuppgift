@@ -7,11 +7,8 @@ import java.util.UUID;
 
 public class ShowBalanceCommand extends Command {
 
-    private final UUID accountID;
-
-    public ShowBalanceCommand(IAccountService accountService, Scanner scanner, UUID accountID) {
+    public ShowBalanceCommand(IAccountService accountService, Scanner scanner) {
         super("Show Balance", accountService, scanner);
-        this.accountID = accountID;
     }
 
     @Override

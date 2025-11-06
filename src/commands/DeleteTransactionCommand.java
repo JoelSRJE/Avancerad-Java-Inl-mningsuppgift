@@ -9,11 +9,8 @@ import java.util.UUID;
 
 public class DeleteTransactionCommand extends Command {
 
-    private final UUID accountID;
-
-    public DeleteTransactionCommand(IAccountService accountService, Scanner scanner, UUID accountID) {
+    public DeleteTransactionCommand(IAccountService accountService, Scanner scanner) {
         super("Delete Transaction", accountService, scanner);
-        this.accountID = accountID;
     }
 
     @Override

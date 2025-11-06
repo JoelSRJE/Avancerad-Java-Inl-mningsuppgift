@@ -9,11 +9,8 @@ import java.util.UUID;
 
 public class DisplayIncomesCommand extends Command {
 
-    private final UUID accountID;
-
-    public DisplayIncomesCommand(IAccountService accountService, Scanner scanner, UUID accountID) {
+    public DisplayIncomesCommand(IAccountService accountService, Scanner scanner) {
         super("Display Incomes", accountService, scanner);
-        this.accountID = accountID;
     }
 
     @Override
@@ -33,7 +30,7 @@ public class DisplayIncomesCommand extends Command {
                 System.out.println(income);
             }
 
-            System.out.println("\nTotal Expenses: " + accountService.getTotalIncomes(accountID) + " (" + incomes.size() + "x)");
+            System.out.println("\nTotal Incomes: " + accountService.getTotalIncomes(accountID) + " (" + incomes.size() + "x)");
 
             System.out.println("\n----------------------------\n");
         } catch (Exception exception) {

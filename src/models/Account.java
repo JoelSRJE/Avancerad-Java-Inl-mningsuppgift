@@ -39,10 +39,6 @@ public class Account {
         return new ArrayList<>(transactions);
     }
 
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
-    }
-
     // Functions
     public void addTransaction(Transaction transaction) {
         transactions.add(transaction);

@@ -2,17 +2,26 @@ package services;
 
 import models.Account;
 import models.Transaction;
+import repositories.IApplicationRepository;
 
 import java.util.*;
 
 public class AccountService implements IAccountService {
 
+    private final IApplicationRepository applicationRepository;
+
     private final Map<UUID, Account> accounts = new HashMap<>();
+
+    public AccountService(IApplicationRepository applicationRepository) {
+        this.applicationRepository = applicationRepository;
+
+    }
 
     @Override
     public Account createAccount(String accountName) {
         Account account = new Account(accountName);
         accounts.put(account.getAccountID(), account);
+
         try {
             if (accounts.size() == 1) {
                 for (Transaction transaction : Transaction.populateTransactionsFirstAccount()) {
@@ -28,6 +37,10 @@ public class AccountService implements IAccountService {
         } catch (Exception exception) {
             System.out.println("Error populating demo transactions for the first 2 accounts: " + exception.getMessage());
         }
+
+        applicationRepository.saveAccounts(account);
+        applicationRepository.saveTransactions(account.getAccountName(), account.getTransactions());
+
         return account;
     }
 
@@ -57,15 +70,20 @@ public class AccountService implements IAccountService {
     public void addTransaction(UUID accountID, Transaction transaction) throws Exception {
         Account account = getAccount(accountID);
         account.addTransaction(transaction);
+
+        saveAccountAndTransactions(account);
     }
 
     @Override
     public void removeTransaction(UUID accountID, UUID transactionID) throws Exception {
         Account account = getAccount(accountID);
         boolean removed = account.removeTransaction(transactionID);
+
         if (!removed) {
             throw new Exception("Transaction not found in this account!");
         }
+
+        saveAccountAndTransactions(account);
     }
 
     @Override
@@ -113,4 +131,22 @@ public class AccountService implements IAccountService {
 
         return expenses;
     }
+
+    private void saveAccountAndTransactions(Account account) {
+        applicationRepository.saveAccounts(account);
+        applicationRepository.saveTransactions(account.getAccountName(), account.getTransactions());
+    }
+
+    public void loadAccountsFromRepository() {
+        List<Account> loadedAccounts = applicationRepository.loadAccounts();
+        for (Account account : loadedAccounts) {
+            List<Transaction> transactions = applicationRepository.loadTransactions(account.getAccountName());
+            for (Transaction transaction : transactions) {
+                account.addTransaction(transaction);
+            }
+            accounts.put(account.getAccountID(), account);
+        }
+    }
+
+
 }

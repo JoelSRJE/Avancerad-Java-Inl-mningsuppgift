@@ -9,11 +9,8 @@ import java.util.UUID;
 
 public class ShowAllTransactionsCommand extends Command {
 
-    private final UUID accountID;
-
-    public ShowAllTransactionsCommand(IAccountService accountService, Scanner scanner, UUID accountID) {
+    public ShowAllTransactionsCommand(IAccountService accountService, Scanner scanner) {
         super("Show All Transactions", accountService, scanner);
-        this.accountID = accountID;
     }
 
     @Override

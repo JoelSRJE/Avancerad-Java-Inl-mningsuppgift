@@ -3,11 +3,13 @@ package commands;
 import services.IAccountService;
 
 import java.util.Scanner;
+import java.util.UUID;
 
 public abstract class Command {
     protected String name;
     protected IAccountService accountService;
     protected Scanner scanner;
+    protected UUID accountID;
 
     public Command(String name, IAccountService accountService, Scanner scanner) {
         this.name = name;
@@ -20,5 +22,9 @@ public abstract class Command {
 
     public String getName() {
         return name;
+    }
+
+    public void setAccountID(UUID accountID) {
+        this.accountID = accountID;
     }
 }

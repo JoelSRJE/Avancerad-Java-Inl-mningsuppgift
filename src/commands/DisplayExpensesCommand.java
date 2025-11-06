@@ -9,11 +9,8 @@ import java.util.UUID;
 
 public class DisplayExpensesCommand extends Command {
 
-    private final UUID accountID;
-
-    public DisplayExpensesCommand(IAccountService accountService, Scanner scanner, UUID accountID) {
+    public DisplayExpensesCommand(IAccountService accountService, Scanner scanner) {
         super("Display Expenses", accountService, scanner);
-        this.accountID = accountID;
     }
 
     @Override

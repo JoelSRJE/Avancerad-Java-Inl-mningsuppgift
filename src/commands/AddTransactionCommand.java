@@ -9,11 +9,8 @@ import java.util.UUID;
 
 public class AddTransactionCommand extends Command {
 
-    private final UUID accountID;
-
-    public AddTransactionCommand(IAccountService accountService, Scanner scanner, UUID accountID) {
+    public AddTransactionCommand(IAccountService accountService, Scanner scanner) {
         super("Add Transaction", accountService, scanner);
-        this.accountID = accountID;
     }
 
     @Override

@@ -12,54 +12,72 @@ public class TerminalCommandService implements ITerminalCommandService {
     // List for all the commands that exists
     private final List<Command> commands = new ArrayList<>();
 
+    private UUID currentAccountID;
+
     // Should print on start/login
     public void onStart(Scanner scanner, IAccountService accountService) {
 
         while (true) {
-            System.out.println("\n=== Finance Application ===");
-            System.out.println("----------------------------");
+            loginOrCreateMenu(accountService, scanner);
 
-            for (int i = 0; i < commands.size(); i++) {
-                Command command = commands.get(i);
-                System.out.println((i + 1) + ". " + command.getName());
-            }
+            while (true) {
+                System.out.println("\n=== Finance Application ===");
+                System.out.println("----------------------------");
 
-            System.out.println("0. Exit Application");
-            System.out.println("----------------------------");
-            System.out.print("> ");
+                for (int i = 0; i < commands.size(); i++) {
+                    Command command = commands.get(i);
+                    System.out.println((i + 1) + ". " + command.getName());
+                }
 
-            String commandInput = scanner.nextLine();
+                System.out.println("L. - Log out / Switch Account");
+                System.out.println("0. Exit Application");
+                System.out.println("----------------------------");
+                System.out.print("> ");
 
-            // if the users wants "shortcuts" with number option
-            try {
-                int numShortcut = Integer.parseInt(commandInput);
+                String commandInput = scanner.nextLine();
 
-                if (numShortcut == 0) {
+                try {
+                    if (commandInput.equalsIgnoreCase("L") || commandInput.equalsIgnoreCase("logout") || commandInput.equalsIgnoreCase("Log out")) {
+                        System.out.println("Account: " + accountService.getAccount(currentAccountID).getAccountName() + " | Logging out...");
+                        loginOrCreateMenu(accountService, scanner);
+                        continue;
+                    }
+                } catch (Exception exception) {
+                    System.out.println("Error: " + exception.getMessage());
+                }
+
+
+                // if the users wants "shortcuts" with number option
+                try {
+                    int numShortcut = Integer.parseInt(commandInput);
+
+                    if (numShortcut == 0) {
+                        System.out.println("Exiting application...");
+                        return;
+                    }
+
+                    if (numShortcut >= 1 && numShortcut <= commands.size()) {
+                        commands.get(numShortcut - 1).execute();
+                    } else {
+                        System.out.println("Invalid choice! 1 - " + commands.size() +
+                                " is the registered commands! | (0 - Exit Application)");
+                    }
+                    continue;
+                }
+                catch (NumberFormatException exception) {
+
+                }
+
+                if (commandInput.equalsIgnoreCase("exit") || commandInput.equalsIgnoreCase("exit application")) {
                     System.out.println("Exiting application...");
                     return;
                 }
 
-                if (numShortcut >= 1 && numShortcut <= commands.size()) {
-                    commands.get(numShortcut - 1).execute();
-                } else {
-                    System.out.println("Invalid choice! 1 - " + commands.size() +
-                            " is the registered commands! | (0 - Exit Application)");
+                try {
+                    executeCommand(commandInput);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
                 }
-                continue;
-            }
-            catch (NumberFormatException exception) {
-
-            }
-
-            if (commandInput.equalsIgnoreCase("exit") || commandInput.equalsIgnoreCase("exit application")) {
-                System.out.println("Exiting application...");
-                return;
-            }
-
-            try {
-                executeCommand(commandInput);
-            } catch (Exception exception) {
-                exception.printStackTrace();
             }
         }
     }
@@ -85,7 +103,8 @@ public class TerminalCommandService implements ITerminalCommandService {
         }
     }
 
-    public UUID loginOrCreateMenu(IAccountService accountService, Scanner scanner) {
+    public void loginOrCreateMenu(IAccountService accountService, Scanner scanner) {
+
         while (true) {
             System.out.println("\n=== Finance Application ===");
             System.out.println("----------------------------");
@@ -109,7 +128,9 @@ public class TerminalCommandService implements ITerminalCommandService {
                     System.out.println("Account name:");
                     System.out.print("> ");
                     String accountName = scanner.nextLine();
-                    return accountService.createAccount(accountName).getAccountID();
+                    UUID newAccountID = accountService.createAccount(accountName).getAccountID();
+                    setCurrentAccount(newAccountID);
+                    return;
                 }
 
                 case "2" -> {
@@ -124,8 +145,7 @@ public class TerminalCommandService implements ITerminalCommandService {
                     System.out.println("----------------------------");
 
                     for (int i = 0; i < accounts.size(); i++) {
-                        System.out.println((i + 1) + ". " + accounts.get(i).getAccountName() +
-                                " | ID: " + accounts.get(i).getAccountID());
+                        System.out.println((i + 1) + ". " + accounts.get(i).getAccountName());
                     }
 
                     System.out.println("Select Account By ID: ");
@@ -134,7 +154,11 @@ public class TerminalCommandService implements ITerminalCommandService {
                     try {
                         int choice = Integer.parseInt(scanner.nextLine());
                         if (choice >= 1 && choice <= accounts.size()) {
-                            return accounts.get(choice - 1).getAccountID();
+                            UUID selectedID = accounts.get(choice - 1).getAccountID();
+                            setCurrentAccount(selectedID);
+
+                            System.out.println("Logging In | Account: " + accounts.get(choice - 1).getAccountName());
+                            return;
                         } else {
                             System.out.println("Invalid choice. Try again!");
                         }
@@ -145,6 +169,14 @@ public class TerminalCommandService implements ITerminalCommandService {
 
                 default -> System.out.println("Invalid option, try again!");
             }
+        }
+    }
+
+    public void  setCurrentAccount(UUID accountID) {
+        this.currentAccountID = accountID;
+
+        for (Command command : commands) {
+            command.setAccountID(currentAccountID);
         }
     }
 }
