@@ -1,4 +1,4 @@
-package main.services;
+package services;
 
 import main.models.Account;
 import main.models.Transaction;

@@ -2,8 +2,8 @@ import main.commands.*;
 import main.repositories.ApplicationRepository;
 import main.repositories.IApplicationRepository;
 import main.services.AccountService;
-import main.services.IAccountService;
-import main.services.TerminalCommandService;
+import services.IAccountService;
+import services.TerminalCommandService;
 
 import java.util.Scanner;
 

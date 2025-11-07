@@ -1,6 +1,6 @@
 package main.commands;
 
-import main.services.IAccountService;
+import services.IAccountService;
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package main.services;
+package services;
 
 import main.commands.Command;
 import main.models.Account;

@@ -1,7 +1,7 @@
 package main.commands;
 
 import main.models.Transaction;
-import main.services.IAccountService;
+import services.IAccountService;
 
 import java.util.List;
 import java.util.Scanner;
